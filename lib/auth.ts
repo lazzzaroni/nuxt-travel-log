@@ -9,7 +9,15 @@ export const auth = betterAuth({
     provider: "sqlite",
   }),
   advanced: {
-    generateId: false,
+    database: {
+      generateId: false,
+    },
+  },
+  socialProviders: {
+    github: {
+      clientId: env.AUTH_GITHUB_CLIENT_ID as string,
+      clientSecret: env.AUTH_GITHUB_CLIENT_SECRET as string,
+    },
   },
   socialProviders: {
     github: {
