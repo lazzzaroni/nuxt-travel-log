@@ -22,8 +22,25 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    optimizeDeps: {
+      include: ["vue", "vue-router", "@vue/shared"],
+    },
   },
   colorMode: {
     dataValue: "theme",
   },
+  nitro: {
+    experimental: {
+      wasm: false,
+    },
+    esbuild: {
+      options: {
+        target: "esnext",
+      },
+    },
+  },
+  build: {
+    transpile: ["vue", "vue-router"],
+  },
+  ssr: true,
 });
