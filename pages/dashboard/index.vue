@@ -1,0 +1,41 @@
+<script lang="ts" setup>
+const { data, status } = await useLazyFetch("/api/locations");
+// const { data, status } = {
+//   data: ref([]),
+//   status: ref("pending"),
+// };
+</script>
+
+<template>
+  <div class="p-4">
+    <h2 class="text-2xl">
+      Locations
+    </h2>
+    <div v-if="status === 'pending'">
+      <span class="loading loading-spinner loading-xl" />
+    </div>
+    <div v-else-if="data && data.length > 0" class=" flex flex-wrap gap-4 mt-4">
+      <div v-for="location in data" :key="location.id" class="card card-compact bg-base-300 h-40 w-72">
+        <div class="card-body">
+          <h3 class="card-title">
+            {{ location.name }}
+          </h3>
+          <p class="card-description">
+            {{ location.description || "No description available" }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div v-else class="flex flex-col gap-2 mt-4">
+      <p>Add a location to get started</p>
+      <NuxtLink to="/dashboard/add" class="btn btn-primary w-fit">
+        <Icon name="tabler:circle-plus-filled" size="24" />
+        Add Location
+      </NuxtLink>
+    </div>
+  </div>
+</template>
+
+<style>
+
+</style>
