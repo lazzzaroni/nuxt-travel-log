@@ -13,3 +13,10 @@ const db = drizzle({
 });
 
 export default db;
+
+// When we changing schemas, we need to generate new schemas and migrate them to the database.
+
+// pnpm drizzle-kit generate
+// pnpm drizzle-kit migrate
+
+// if migration doesn't work, it could mean that it didn't corelate to applied constraints.

@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1751647973885,
-      "tag": "0000_complete_bullseye",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1751720430165,
-      "tag": "0001_faulty_anthem",
+      "when": 1752054183878,
+      "tag": "0000_sparkling_medusa",
       "breakpoints": true
     }
   ]
