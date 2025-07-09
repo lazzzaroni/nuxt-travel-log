@@ -1,13 +1,9 @@
 import type { DrizzleError } from "drizzle-orm";
 
-import { and, eq } from "drizzle-orm";
-import { customAlphabet } from "nanoid";
 import slugify from "slug";
 
-import db from "~/lib/db";
-import { location, locationInsertSchema } from "~/lib/db/schema";
-
-const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 5);
+import { findLocationByName, findUniqueSlug, insertLocation } from "~/lib/db/queries/location";
+import { locationInsertSchema } from "~/lib/db/schema";
 
 export default defineEventHandler(async (event) => {
   if (!event.context.user) {
@@ -35,12 +31,7 @@ export default defineEventHandler(async (event) => {
     ));
   }
 
-  const existingLocation = await db.query.location.findFirst({
-    where: and(
-      eq(location.name, result.data.name),
-      eq(location.userId, event.context.user.id),
-    ),
-  });
+  const existingLocation = await findLocationByName(result.data, event.context.user.id);
 
   if (existingLocation) {
     return sendError(event, createError({
@@ -49,31 +40,10 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
-  // TODO: find the way to optimize slug generation to avoid multiple queries to the database
-  let slug = slugify(result.data.name);
-  let existing = Boolean(await db.query.location.findFirst({
-    where: eq(location.slug, slug),
-  }));
-
-  while (existing) {
-    const id = nanoid();
-    const idSlug = `${slug}-${id}`;
-    existing = Boolean(await db.query.location.findFirst({
-      where: eq(location.slug, idSlug),
-    }));
-    if (!existing) {
-      slug = idSlug;
-    }
-  }
+  const slug = await findUniqueSlug(slugify(result.data.name));
 
   try {
-    const [created] = await db.insert(location).values({
-      ...result.data,
-      userId: event.context.user.id,
-      slug,
-    }).returning();
-
-    return created;
+    return insertLocation(result.data, slug, event.context.user.id);
   }
   catch (e) {
     const error = e as DrizzleError;
