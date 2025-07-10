@@ -1,13 +1,22 @@
 <script lang="ts" setup>
-const style = "https://demotiles.maplibre.org/style.json";
-const center = [-1.559482, 47.21322];
-const zoom = 8;
+import { LODZ } from "~/lib/constants";
+
+// maputnik - to style tiles
+
+const colorMode = useColorMode();
+
+const style = computed(() => {
+  return colorMode.value === "dark"
+    ? "/styles/dark.json"
+    : "https://tiles.openfreemap.org/styles/liberty";
+});
+const zoom = 6;
 </script>
 
 <template>
   <MglMap
     :map-style="style"
-    :center="center"
+    :center="LODZ"
     :zoom="zoom"
   >
     <MglNavigationControl />
