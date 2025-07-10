@@ -24,7 +24,7 @@ onMounted(() => {
 
 <template>
   <div class="flex-1 flex">
-    <div class="bg-base-100 transition-all duration-300" :class="{ 'w-64': isSidebarOpen, 'w-16': !isSidebarOpen }">
+    <div class="bg-base-100 transition-all duration-300 shrink-0" :class="{ 'w-64': isSidebarOpen, 'w-16': !isSidebarOpen }">
       <div class="flex">
         <button class="btn btn-ghost w-full p-2 h-12" :class="{ 'justify-center': !isSidebarOpen, 'justify-end': isSidebarOpen }" @click="toggleSidebar">
           <Icon
@@ -81,9 +81,11 @@ onMounted(() => {
         />
       </div>
     </div>
-    <div class="flex-1 flex flex-col">
-      <NuxtPage />
-      <AppMap class="flex-1" />
+    <div class="flex-1 overflow-auto">
+      <div class="flex flex-col size-full">
+        <NuxtPage />
+        <AppMap class="flex-1" />
+      </div>
     </div>
   </div>
 </template>
