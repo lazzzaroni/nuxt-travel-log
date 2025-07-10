@@ -1,7 +1,9 @@
+// maputnik - to style tiles
+
 <script lang="ts" setup>
 import { LODZ } from "~/lib/constants";
 
-// maputnik - to style tiles
+const mapStore = useMapStore();
 
 const colorMode = useColorMode();
 
@@ -11,6 +13,10 @@ const style = computed(() => {
     : "https://tiles.openfreemap.org/styles/liberty";
 });
 const zoom = 6;
+
+onMounted(() => {
+  mapStore.init();
+});
 </script>
 
 <template>
@@ -20,6 +26,17 @@ const zoom = 6;
     :zoom="zoom"
   >
     <MglNavigationControl />
+    <MglMarker
+      v-for="point in mapStore.mapPoints"
+      :key="point.id"
+      :coordinates="[point.long, point.lat]"
+    >
+      <template #marker>
+        <div class="tooltip tooltip-top" :data-tip="point.label">
+          <Icon name="tabler:map-pin-filled" size="30" class="text-secondary" />
+        </div>
+      </template>
+    </MglMarker>
   </MglMap>
 </template>
 

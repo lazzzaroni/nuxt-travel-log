@@ -8,6 +8,13 @@
       "when": 1752054183878,
       "tag": "0000_sparkling_medusa",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1752155561473,
+      "tag": "0001_luxuriant_cable",
+      "breakpoints": true
     }
   ]
 }
