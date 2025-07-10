@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 const isSidebarOpen = ref(true);
 
+const route = useRoute();
+const sidebarStore = useSidebarStore();
+const locationsStore = useLocationsStore();
+
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
   localStorage.setItem("isSidebarOpen", JSON.stringify(isSidebarOpen.value));
@@ -10,6 +14,10 @@ onMounted(() => {
   const storedState = localStorage.getItem("isSidebarOpen");
   if (storedState !== null) {
     isSidebarOpen.value = JSON.parse(storedState);
+  }
+
+  if (route.path !== "/dashboard") {
+    locationsStore.refresh();
   }
 });
 </script>
@@ -46,7 +54,25 @@ onMounted(() => {
           label="Add Location"
           to="/dashboard/add"
         />
+
+        <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length > 0" class="divider" />
+
+        <div v-if="sidebarStore.loading" class="px-2">
+          <div class="skeleton h-10 w-full" />
+        </div>
+        <div v-if="!sidebarStore.loading && sidebarStore.sidebarItems.length > 0" class="flex flex-col">
+          <SidebarButton
+            v-for="item in sidebarStore.sidebarItems"
+            :key="item.id"
+            :show-label="isSidebarOpen"
+            :icon="item.icon"
+            :label="item.label"
+            :to="item.to || '#'"
+          />
+        </div>
+
         <div class="divider" />
+
         <SidebarButton
           :show-label="isSidebarOpen"
           icon="tabler:logout-2"
