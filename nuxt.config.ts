@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vee-validate/nuxt",
     "nuxt-csurf",
+    "nuxt-maplibre",
   ],
   eslint: {
     config: {
@@ -25,7 +26,7 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
     optimizeDeps: {
-      include: ["vue", "vue-router", "@vue/shared"],
+      include: ["vue", "vue-router", "@vue/shared", "maplibre-gl"],
     },
   },
   colorMode: {
