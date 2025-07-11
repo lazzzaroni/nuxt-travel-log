@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-const isSidebarOpen = ref(true);
-
-const route = useRoute();
 const sidebarStore = useSidebarStore();
 const locationsStore = useLocationsStore();
+const mapStore = useMapStore();
+
+const route = useRoute();
+
+const isSidebarOpen = ref(true);
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -68,6 +70,9 @@ onMounted(() => {
             :icon="item.icon"
             :label="item.label"
             :to="item.to || '#'"
+            :icon-color="mapStore.selectedPoint === item.location ? 'text-accent' : undefined"
+            @mouseenter="mapStore.selectedPoint = item.location || null"
+            @mouseleave="mapStore.selectedPoint = null"
           />
         </div>
 

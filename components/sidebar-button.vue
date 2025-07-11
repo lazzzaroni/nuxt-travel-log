@@ -4,6 +4,7 @@ const props = defineProps<{
   label: string;
   to: string;
   showLabel?: boolean;
+  iconColor?: "text-accent" | "text-secondary" | "text-primary";
 }>();
 
 const route = useRoute();
@@ -13,7 +14,7 @@ const isActive = computed(() => route.path === props.to);
 <template>
   <div class="tooltip-right" :data-tip="showLabel ? undefined : label" :class="{ tooltip: !props.showLabel }">
     <NuxtLink :to="props.to" class="flex gap-2 p-2 hover:bg-base-300 hover:cursor-pointer flex-nowrap" :class="{ 'bg-base-200': isActive, 'justify-center': !props.showLabel, 'justify-start': props.showLabel }">
-      <Icon :name="props.icon" size="24" />
+      <Icon :name="props.icon" size="24" :class="props.iconColor" />
       <Transition name="grow">
         <span v-if="props.showLabel">{{ props.label }}</span>
       </Transition>
