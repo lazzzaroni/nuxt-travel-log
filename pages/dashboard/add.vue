@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import type { FetchError } from "ofetch";
 
+import type { NominatimResult } from "~/lib/types";
+
 import { LODZ } from "~/lib/constants";
 import { locationInsertSchema } from "~/lib/db/schema";
+import getFetchErrorMessage from "~/utils/get-fetch-error-message";
 
 const mapStore = useMapStore();
 
@@ -40,12 +43,24 @@ const onSubmit = handleSubmit(async (values) => {
     if (error.data.data) {
       setErrors(error.data.data);
     }
-    submitError.value = error.data?.statusMessage || error.statusMessage || "An unknown error occurred.";
+    submitError.value = getFetchErrorMessage(error);
   }
   finally {
     loading.value = false;
   }
 });
+
+function searchResultSelected(result: NominatimResult) {
+  mapStore.addedPoint = {
+    id: 1,
+    name: result.display_name,
+    description: "",
+    lat: Number(result.lat),
+    long: Number(result.lon),
+    centerMap: true,
+  };
+  setFieldValue("name", result.display_name);
+}
 
 function formatCoordinates(formData: typeof controlledValues.value): string {
   if (!formData.lat || !formData.long) {
@@ -95,19 +110,6 @@ onBeforeRouteLeave(() => {
       </p>
     </div>
     <div v-if="submitError" role="alert" class="alert alert-error">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
       <span>{{ submitError }}</span>
     </div>
     <form class="flex flex-col gap-4" @submit.prevent="onSubmit">
@@ -124,14 +126,26 @@ onBeforeRouteLeave(() => {
         type="textarea"
         :error="errors.description"
       />
-      <p>
-        Drag the
-        <Icon name="tabler:map-pin-filled" size="16" class="text-warning inline" />
-        marker to your desired location or double-click on the map
-      </p>
+
       <p class="text-xs text-gray-400">
-        Current location: {{ formatCoordinates(controlledValues) }}
+        Current coordinates: {{ formatCoordinates(controlledValues) }}
       </p>
+
+      <p>To set the coordinates:</p>
+      <ul class="list-disc list-inside text-sm">
+        <li>
+          Drag the
+          <Icon name="tabler:map-pin-filled" size="16" class="text-warning inline" />
+          marker on the map.
+        </li>
+        <li>
+          Double-click the map.
+        </li>
+        <li>
+          Search for a location below.
+        </li>
+      </ul>
+
       <div class="flex justify-end gap-2">
         <button
           :disabled="loading"
@@ -149,6 +163,8 @@ onBeforeRouteLeave(() => {
         </button>
       </div>
     </form>
+    <div class="divider" />
+    <AppPlaceSearch @result-selected="searchResultSelected" />
   </div>
 </template>
 
