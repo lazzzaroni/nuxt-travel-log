@@ -28,10 +28,10 @@ onMounted(() => {
         }"
         class="card card-compact bg-base-300 h-40 w-72 shrink-0 hover:cursor-pointer border mb-2"
         :class="{
-          'border-accent': mapStore.selectedPoint === location,
-          'border-transparent': mapStore.selectedPoint !== location,
+          'border-accent': isPointSelected(location, mapStore.selectedPoint),
+          'border-transparent': !isPointSelected(location, mapStore.selectedPoint),
         }"
-        @mouseenter="mapStore.selectedPoint = location"
+        @mouseenter="mapStore.selectedPoint = createMapPointFromLocation(location)"
         @mouseleave="mapStore.selectedPoint = null"
       >
         <div class="card-body">
