@@ -1,10 +1,13 @@
+import type { RouteLocationRaw } from "vue-router";
+
 import type { MapPoint } from "~/lib/types";
 
 export type SidebarItem = {
   id: string;
   label: string;
   icon: string;
-  to: string;
+  href?: string;
+  to?: RouteLocationRaw;
   location?: MapPoint | null;
 
 };
