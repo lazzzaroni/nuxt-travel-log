@@ -9,13 +9,14 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "typecheck": "nuxi typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky"
   },
   "dependencies": {
     "@indoorequal/vue-maplibre-gl": "^8.4.0",
-    "@libsql/client": "^0.15.9",
+    "@libsql/client": "^0.15.10",
     "@nuxt/eslint": "1.5.2",
     "@tailwindcss/vite": "^4.1.11",
     "@vee-validate/nuxt": "^4.15.1",
@@ -49,7 +50,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "nuxt-csurf": "^1.6.5",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "vue-tsc": "^3.0.1"
   },
   "lint-staged": {
     "*": "pnpm lint"
