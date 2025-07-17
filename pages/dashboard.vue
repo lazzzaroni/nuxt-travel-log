@@ -21,6 +21,23 @@ onMounted(() => {
   if (route.path !== "/dashboard") {
     locationsStore.refresh();
   }
+
+  if (route.path === "/dashboard") {
+    sidebarStore.sidebarTopItems = [
+      {
+        id: "locations",
+        icon: "tabler:map",
+        label: "Locations",
+        to: "/dashboard",
+      },
+      {
+        id: "add-location",
+        icon: "tabler:circle-plus-filled",
+        label: "Add Location",
+        to: "/dashboard/add",
+      },
+    ];
+  }
 });
 </script>
 
@@ -45,16 +62,12 @@ onMounted(() => {
       </div>
       <div class="flex flex-col">
         <SidebarButton
+          v-for="item in sidebarStore.sidebarTopItems"
+          :key="item.id"
           :show-label="isSidebarOpen"
-          icon="tabler:map"
-          label="Locations"
-          to="/dashboard"
-        />
-        <SidebarButton
-          :show-label="isSidebarOpen"
-          icon="tabler:circle-plus-filled"
-          label="Add Location"
-          to="/dashboard/add"
+          :icon="item.icon"
+          :label="item.label"
+          :to="item.to"
         />
 
         <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length > 0" class="divider" />
