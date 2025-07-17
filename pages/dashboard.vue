@@ -1,16 +1,72 @@
 <script lang="ts" setup>
 const sidebarStore = useSidebarStore();
-const locationsStore = useLocationsStore();
+const locationStore = useLocationStore();
 const mapStore = useMapStore();
 
 const route = useRoute();
 
 const isSidebarOpen = ref(true);
 
+const { currentLocation } = storeToRefs(locationStore);
+
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value;
   localStorage.setItem("isSidebarOpen", JSON.stringify(isSidebarOpen.value));
 }
+
+effect(() => {
+  if (route.name === "dashboard") {
+    sidebarStore.sidebarTopItems = [{
+      id: "link-dashboard",
+      label: "Locations",
+      to: "/dashboard",
+      icon: "tabler:map",
+    }, {
+      id: "link-location-add",
+      label: "Add Location",
+      to: "/dashboard/add",
+      icon: "tabler:circle-plus-filled",
+    }];
+  }
+  else if (route.name === "dashboard-location-slug") {
+    sidebarStore.sidebarTopItems = [{
+      id: "link-dashboard",
+      label: "Back to Locations",
+      to: "/dashboard",
+      icon: "tabler:arrow-left",
+    }, {
+      id: "link-dashboard",
+      label: currentLocation.value ? currentLocation.value.name : "View Logs",
+      to: {
+        name: "dashboard-location-slug",
+        params: {
+          slug: currentLocation.value?.slug,
+        },
+      },
+      icon: "tabler:map",
+    }, {
+      id: "link-location-edit",
+      label: "Edit Location",
+      to: {
+        name: "dashboard-location-slug-edit",
+        params: {
+          slug: currentLocation.value?.slug,
+        },
+      },
+      icon: "tabler:map-pin-cog",
+    }, {
+      id: "link-location-add",
+      label: "Add Location Log",
+      to: {
+        name: "dashboard-location-slug-add",
+        params: {
+          slug: currentLocation.value?.slug,
+        },
+      },
+      icon: "tabler:circle-plus-filled",
+    }];
+  }
+});
 
 onMounted(() => {
   const storedState = localStorage.getItem("isSidebarOpen");
@@ -19,24 +75,7 @@ onMounted(() => {
   }
 
   if (route.path !== "/dashboard") {
-    locationsStore.refresh();
-  }
-
-  if (route.path === "/dashboard") {
-    sidebarStore.sidebarTopItems = [
-      {
-        id: "locations",
-        icon: "tabler:map",
-        label: "Locations",
-        to: "/dashboard",
-      },
-      {
-        id: "add-location",
-        icon: "tabler:circle-plus-filled",
-        label: "Add Location",
-        to: "/dashboard/add",
-      },
-    ];
+    locationStore.refreshLocations();
   }
 });
 </script>
