@@ -44,37 +44,41 @@ effect(() => {
       label: "Back to Locations",
       to: "/dashboard",
       icon: "tabler:arrow-left",
-    }, {
-      id: "link-dashboard",
-      label: currentLocationStatus.value === "pending" || !currentLocation.value ? "Loading..." : currentLocation.value.name,
-      to: {
-        name: "dashboard-location-slug",
-        params: {
-          slug: route.params.slug,
-        },
-      },
-      icon: "tabler:map",
-    }, {
-      id: "link-location-edit",
-      label: "Edit Location",
-      to: {
-        name: "dashboard-location-slug-edit",
-        params: {
-          slug: route.params.slug,
-        },
-      },
-      icon: "tabler:map-pin-cog",
-    }, {
-      id: "link-location-add",
-      label: "Add Location Log",
-      to: {
-        name: "dashboard-location-slug-add",
-        params: {
-          slug: route.params.slug,
-        },
-      },
-      icon: "tabler:circle-plus-filled",
     }];
+
+    if (currentLocation.value && currentLocationStatus.value !== "pending") {
+      sidebarStore.sidebarTopItems.push({
+        id: "link-dashboard",
+        label: currentLocation.value.name,
+        to: {
+          name: "dashboard-location-slug",
+          params: {
+            slug: route.params.slug,
+          },
+        },
+        icon: "tabler:map",
+      }, {
+        id: "link-location-edit",
+        label: "Edit Location",
+        to: {
+          name: "dashboard-location-slug-edit",
+          params: {
+            slug: route.params.slug,
+          },
+        },
+        icon: "tabler:map-pin-cog",
+      }, {
+        id: "link-location-add",
+        label: "Add Location Log",
+        to: {
+          name: "dashboard-location-slug-add",
+          params: {
+            slug: route.params.slug,
+          },
+        },
+        icon: "tabler:circle-plus-filled",
+      });
+    }
   }
 });
 
@@ -114,6 +118,10 @@ onMounted(() => {
           :label="item.label"
           :to="item.to"
         />
+
+        <div v-if="route.path.startsWith('/dashboard/location') && currentLocationStatus === 'pending'" class="flex items-center justify-center">
+          <div class="loading" />
+        </div>
 
         <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length > 0" class="divider" />
 
