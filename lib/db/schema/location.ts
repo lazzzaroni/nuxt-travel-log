@@ -3,6 +3,8 @@ import { int, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+import { DescriptionSchema, LatSchema, LongSchema, NameSchema } from "~/lib/zod-schemas";
+
 import type { SelectLocationLog } from "./location-log";
 
 import { user } from "./auth";
@@ -41,10 +43,10 @@ const _baseLocationInsertSchema = createInsertSchema(location, {
 
 // Recreate the schema using z.object to ensure proper typing
 export const locationInsertSchema = z.object({
-  name: z.string().min(1).max(100).trim(),
-  description: z.string().max(1000).trim().optional(),
-  lat: z.number().min(-90).max(90),
-  long: z.number().min(-180).max(180),
+  name: NameSchema,
+  description: DescriptionSchema,
+  lat: LatSchema,
+  long: LongSchema,
 });
 
 export type LocationInsertSchema = z.infer<typeof locationInsertSchema>;
