@@ -35,7 +35,7 @@ export const locationLogInsertSchema = z.object({
   startedAt: z.number().int().min(0),
   endedAt: z.number().int().min(0),
 }).superRefine((values, context) => {
-  if (values.startedAt >= values.endedAt || values.endedAt < values.startedAt) {
+  if (values.startedAt > values.endedAt || values.endedAt < values.startedAt) {
     context.addIssue({
       code: z.ZodIssueCode.custom,
       message: "End Date must be after Start Date.",
