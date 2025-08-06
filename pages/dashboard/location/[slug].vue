@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type { FetchError } from "ofetch";
 
+import formatDate from "~/utils/format-date";
+import { createMapPointFromLocationLog } from "~/utils/map-points";
+
 const route = useRoute();
 const locationStore = useLocationStore();
 const {
@@ -51,7 +54,7 @@ onBeforeRouteUpdate((to) => {
 </script>
 
 <template>
-  <div class="p-4 min-h-64">
+  <div class="page-content-top">
     <div v-if="loading">
       <div class="loading" />
     </div>
@@ -100,6 +103,21 @@ onBeforeRouteUpdate((to) => {
           <Icon name="tabler:map-pin-plus" size="24" />
           Add Location Log
         </NuxtLink>
+      </div>
+      <div v-if="route.name === 'dashboard-location-slug' && location.locationLogs.length > 0" class="location-list">
+        <LocationCard v-for="locationLog in location.locationLogs" :key="locationLog.id" :map-point="createMapPointFromLocationLog(locationLog)">
+          <template #top>
+            <div class="flex items-center gap-2">
+              <Icon name="tabler:calendar" size="20" />
+              <span class="text-sm text-gray-500 italic">
+                <span v-if="locationLog.startedAt !== locationLog.endedAt">
+                  {{ formatDate(locationLog.startedAt) }} / {{ formatDate(locationLog.endedAt) }}
+                </span>
+                <span v-else>{{ formatDate(locationLog.startedAt) }}</span>
+              </span>
+            </div>
+          </template>
+        </LocationCard>
       </div>
     </div>
     <div v-if="route.name !== 'dashboard-location-slug'">
