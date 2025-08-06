@@ -16,6 +16,19 @@ export async function findLocationLog(id: number, userId: number) {
   return foundLog;
 }
 
+export async function deleteLocationLog(id: number, userId: number) {
+  const [deleted] = await db.delete(locationLog)
+    .where(
+      and(
+        eq(locationLog.id, id),
+        eq(locationLog.userId, userId),
+      ),
+    )
+    .returning();
+
+  return deleted;
+}
+
 export async function updateLocationLog(updatable: LocationLogInsertSchema, id: number, userId: number) {
   const [updated] = await db.update(locationLog)
     .set({
