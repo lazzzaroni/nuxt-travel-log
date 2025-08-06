@@ -104,7 +104,7 @@ onBeforeRouteUpdate((to) => {
           Add Location Log
         </NuxtLink>
       </div>
-      <div v-if="route.name === 'dashboard-location-slug' && location.locationLogs.length > 0" class="location-list">
+      <div v-if="route.name === 'dashboard-location-slug' && !loading && location.locationLogs.length > 0" class="location-list">
         <LocationCard v-for="locationLog in location.locationLogs" :key="locationLog.id" :map-point="createMapPointFromLocationLog(locationLog)">
           <template #top>
             <div class="flex items-center gap-2">
