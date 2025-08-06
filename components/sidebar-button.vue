@@ -19,7 +19,7 @@ const isActive = computed(() => route.path === props.to);
     <NuxtLink :to="props.href || props.to" class="flex gap-2 p-2 hover:bg-base-300 hover:cursor-pointer flex-nowrap" :class="{ 'bg-base-200': isActive, 'justify-center': !props.showLabel, 'justify-start': props.showLabel }">
       <Icon :name="props.icon" size="24" :class="props.iconColor" />
       <Transition name="grow">
-        <span v-if="props.showLabel">{{ props.label }}</span>
+        <span v-if="props.showLabel" class="truncate">{{ props.label }}</span>
       </Transition>
     </NuxtLink>
   </div>
