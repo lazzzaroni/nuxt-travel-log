@@ -16,6 +16,23 @@ export async function findLocationLog(id: number, userId: number) {
   return foundLog;
 }
 
+export async function updateLocationLog(updatable: LocationLogInsertSchema, id: number, userId: number) {
+  const [updated] = await db.update(locationLog)
+    .set({
+      ...updatable,
+      updatedAt: Date.now(),
+    })
+    .where(
+      and(
+        eq(locationLog.id, id),
+        eq(locationLog.userId, userId),
+      ),
+    )
+    .returning();
+
+  return updated;
+}
+
 export async function insertLocationLog(insertable: LocationLogInsertSchema, locationId: number, userId: number) {
   const [inserted] = await db.insert(locationLog).values({
     ...insertable,
