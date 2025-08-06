@@ -3,10 +3,9 @@ import { int, real, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-import { DescriptionSchema, LatSchema, LongSchema, NameSchema } from "~/lib/zod-schemas";
-
 import type { SelectLocationLog } from "./location-log";
 
+import { DescriptionSchema, LatSchema, LongSchema, NameSchema } from "../../zod-schemas";
 import { user } from "./auth";
 import { locationLog } from "./location-log";
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import formatDate from "~/utils/format-date";
+
 const props = defineProps<{
   label: string;
   name: string;
@@ -11,14 +13,6 @@ const { handleBlur, value: inputValue, handleChange } = useField<number>(props.n
   initialValue: props.value,
   validateOnMount: true,
 });
-
-function formatDate(value: number | string) {
-  const date = new Date(value);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
 
 function handleDateChange(event: Event) {
   const target = event.target as HTMLInputElement;

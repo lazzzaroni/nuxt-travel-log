@@ -5,6 +5,14 @@
     light --default,
     dark --prefersdark;
 }
+
+.page-content-top {
+  @apply p-4 min-h-72;
+}
+.location-list {
+  @apply flex flex-nowrap gap-4 mt-4 overflow-auto;
+}
+
 .maplibregl-popup-close-button {
   @apply px-2;
 }
