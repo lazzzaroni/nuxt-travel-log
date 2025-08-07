@@ -118,6 +118,17 @@ effect(() => {
           },
         },
         icon: "tabler:edit",
+      }, {
+        id: "link-location-log-images",
+        label: "Manage Images",
+        to: {
+          name: "dashboard-location-slug-id-images",
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
+          },
+        },
+        icon: "tabler:photo-cog",
       }];
     }
   }
