@@ -28,6 +28,11 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ["vue", "vue-router", "@vue/shared", "maplibre-gl"],
     },
+    server: {
+      watch: {
+        ignored: ["./docker-data/*"],
+      },
+    },
   },
   colorMode: {
     dataValue: "theme",
