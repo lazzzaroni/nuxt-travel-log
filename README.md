@@ -4,6 +4,12 @@ A full stack application build with Nuxt that allows users to keep track of all 
 
 ## Setup
 
+Create a `.env` file in the root directory and fill in the required environment variables.
+
+```bash
+cp .env.example .env
+```
+
 Make sure to install dependencies:
 
 ```bash
