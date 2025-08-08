@@ -34,10 +34,10 @@ export default defineAuthenticatedEventHandler(async (event) => {
   const metadata = response.Metadata as ObjectMetadata | undefined;
 
   if (!metadata || metadata["location-log-id"] !== id || metadata["user-id"] !== event.context.user.id.toString()) {
-    return sendError(event, createError({
+    throw createError({
       statusCode: 403,
       statusMessage: "Forbidden: Invalid image metadata.",
-    }));
+    });
   }
 
   const inserted = await insertLocationLogImage(result.data, Number(id), event.context.user.id);
