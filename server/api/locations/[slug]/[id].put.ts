@@ -17,28 +17,28 @@ export default defineAuthenticatedEventHandler(async (event) => {
   const location = await findLocation(slug, event.context.user.id);
 
   if (!location) {
-    return sendError(event, createError({
+    throw createError({
       statusCode: 404,
       statusMessage: "Location not found.",
-    }));
+    });
   }
 
   const id = getRouterParam(event, "id") as string;
 
   if (!z.coerce.number().safeParse(id).success) {
-    return sendError(event, createError({
+    throw createError({
       statusCode: 422,
       statusMessage: "Invalid id.",
-    }));
+    });
   }
 
   const locationLog = await updateLocationLog(result.data, Number(id), event.context.user.id);
 
   if (!locationLog) {
-    return sendError(event, createError({
+    throw createError({
       statusCode: 404,
       statusMessage: "Location log not found.",
-    }));
+    });
   }
 
   return locationLog;

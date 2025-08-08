@@ -21,19 +21,19 @@ export default defineAuthenticatedEventHandler(
       });
 
       if (!response.ok) {
-        return sendError(event, createError({
+        throw createError({
           statusCode: 504,
           statusMessage: "Failed to fetch search results from Nominatim.",
-        }));
+        });
       }
 
       return await response.json() as Array<NominatimResult>;
     }
     catch {
-      return sendError(event, createError({
+      throw createError({
         statusCode: 504,
         statusMessage: "Failed to fetch search results from Nominatim.",
-      }));
+      });
     }
   }, {
     maxAge: 60 * 60 * 24,
